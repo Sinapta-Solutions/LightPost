@@ -23,17 +23,20 @@ One Python process, SQLite, and plain HTML/CSS/JavaScript. No external database,
 
 ## Supported platforms
 
-| Platform       | Supported posts                                                                            |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| Bluesky        | Text and up to four images                                                                 |
-| Mastodon       | Public text and up to four images                                                          |
-| X (Twitter)    | Text and up to four JPEG/PNG images; API cost confirmation before publishing or scheduling |
-| Instagram      | One public JPEG with an optional caption; Creator/Business accounts                        |
-| Threads        | Text or one public JPEG                                                                    |
-| Discord        | Server webhook messages and up to four public images                                       |
-| LinkedIn       | Public personal-profile posts with text and up to four images                              |
-| Telegram       | Public or private channel posts with text and up to four JPEG/PNG images                   |
-| Facebook Pages | Page feed posts with text and up to four JPEG/PNG images                                   |
+| Platform                | Supported posts                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------ |
+| Bluesky                 | Text and up to four images                                                                 |
+| Mastodon                | Public text and up to four images                                                          |
+| X (Twitter)             | Text and up to four JPEG/PNG images; API cost confirmation before publishing or scheduling |
+| Instagram               | One public JPEG with an optional caption; Creator/Business accounts                        |
+| Threads                 | Text or one public JPEG                                                                    |
+| Discord                 | Server webhook messages and up to four public images                                       |
+| LinkedIn                | Public personal-profile posts with text and up to four images                              |
+| Telegram                | Public or private channel posts with text and up to four JPEG/PNG images                   |
+| Facebook Pages          | Page feed posts with text and up to four JPEG/PNG images                                   |
+| TikTok                  | _Under development_                                                                        |
+| Pinterest               | _Under development_                                                                        |
+| Google Business Profile | _Under development_                                                                        |
 
 Images are limited to **1 MB each**. Use **Add Image** to import a direct public HTTPS JPEG URL. Keep its URL available until delivery completes for Instagram, Threads, and Discord; your server can remain private. Platform-specific limits appear in the composer and Setup Guide. Videos are not supported.
 
