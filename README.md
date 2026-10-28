@@ -61,7 +61,7 @@ Keep the app running for scheduled delivery. For automatic startup on Linux, an 
 ### Run in Docker
 
 Requires Docker with Compose 2.30 or newer. Copy `.env.example` to
-`.env.container`, set an `ADMIN_PASSWORD` of at least 16 characters, and restrict
+`.env.container`, set an `ADMIN_PASSWORD` of 1 to 8 characters, and restrict
 the file to your user with `chmod 600 .env.container`. The raw environment file
 preserves password characters literally; keep each value on one line.
 
@@ -98,7 +98,7 @@ No `.env` file is required for the default setup. To override settings, copy [.e
 | -------------------- | --------------------------------------------------------------------------------- |
 | `HOST`, `PORT`       | `127.0.0.1:3000`                                                                  |
 | `DATABASE_PATH`      | `data/lightpost.sqlite`; media and the generated key live alongside it            |
-| `ADMIN_PASSWORD`     | Optional locally; at least 16 characters required when binding beyond loopback    |
+| `ADMIN_PASSWORD`     | At most 8 characters; optional locally, required when binding beyond loopback     |
 | `ENCRYPTION_KEY`     | Generated automatically if omitted; custom keys must be 64 hexadecimal characters |
 | `COOKIE_SECURE`      | `false`; enable when serving over HTTPS                                           |
 | `META_GRAPH_VERSION` | `v25.0` for Instagram and Facebook Pages                                          |

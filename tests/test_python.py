@@ -5,7 +5,7 @@ import unittest
 import warnings
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, patch
 
 import aiohttp
 from aiohttp import web
@@ -50,6 +50,32 @@ def post(id="p1", **changes):
         "results": [],
         **changes,
     }
+
+
+class ConfigTests(unittest.TestCase):
+    def test_password_length_and_loopback_requirements(self):
+        for host, password, valid in [
+            ("0.0.0.0", "", False),
+            ("0.0.0.0", "a", True),
+            ("0.0.0.0", "a" * 8, True),
+            ("0.0.0.0", "a" * 9, False),
+            ("0.0.0.0", "a" * 16, False),
+            ("127.0.0.1", "", True),
+            ("localhost", "", True),
+            ("::1", "", True),
+            ("127.0.0.1", "a" * 8, True),
+            ("127.0.0.1", "a" * 9, False),
+        ]:
+            with (
+                self.subTest(host=host, length=len(password)),
+                patch.dict("os.environ", {"HOST": host, "ADMIN_PASSWORD": password}, clear=True),
+                patch("lightpost.config.load_env"),
+            ):
+                if valid:
+                    self.assertEqual(Config.from_env().password, password)
+                else:
+                    with self.assertRaisesRegex(ValueError, "ADMIN_PASSWORD"):
+                        Config.from_env()
 
 
 class CoreTests(unittest.TestCase):

@@ -38,6 +38,8 @@ class Config:
             web_root=os.getenv("WEB_ROOT", "web"),
             secure_cookie=os.getenv("COOKIE_SECURE") == "true",
         )
-        if config.host not in ("127.0.0.1", "localhost", "::1") and len(config.password) < 16:
-            raise ValueError("Set ADMIN_PASSWORD (16+ characters) before binding beyond loopback.")
+        if len(config.password) > 8:
+            raise ValueError("ADMIN_PASSWORD must have at most 8 characters.")
+        if config.host not in ("127.0.0.1", "localhost", "::1") and not config.password:
+            raise ValueError("Set ADMIN_PASSWORD (1-8 characters) before binding beyond loopback.")
         return config
