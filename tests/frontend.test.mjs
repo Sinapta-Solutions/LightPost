@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import { guides } from '../web/guides.js';
 
@@ -256,6 +256,19 @@ test('dialogs, retry actions, and cancellation controls', async () => {
   );
   vm.runInContext(`composer.contentOptions.ig = {image: false};`, context);
   assert.equal(vm.runInContext('savedImageIssue({publicSource: false})', context), '');
+  vm.runInContext('renderLanding()', context);
+  const landing = vm.runInContext('root.innerHTML', context);
+  assert.ok(landing.indexOf('</h1>') < landing.indexOf('class="hero-platforms"'));
+  const logos = [...landing.matchAll(/src="(\/logos\/[^"]+)"/g)].map((match) => match[1]);
+  assert.equal(logos.length, 12);
+  assert.ok(!/under development/i.test(landing));
+  for (const path of logos) {
+    assert.ok(existsSync(new URL(`../web${path}`, import.meta.url)), path);
+    assert.ok(path.endsWith('.svg'), path);
+  }
+  for (const name of ['TikTok', 'Pinterest', 'Google Business Profile']) {
+    assert.ok(landing.includes(`aria-label="${name}"`), name);
+  }
 });
 
 test('multi-platform preview shows X images and follows its image toggle', () => {

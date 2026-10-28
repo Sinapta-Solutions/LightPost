@@ -905,6 +905,11 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
             response = await self.client.get(route)
             self.assertEqual(response.status, 200)
             self.assertIn("frame-ancestors 'none'", response.headers["Content-Security-Policy"])
+        for logo in Path("web/logos").glob("*.svg"):
+            response = await self.client.get("/logos/" + logo.name)
+            self.assertEqual(response.status, 200, logo.name)
+            self.assertEqual(response.content_type, "image/svg+xml", logo.name)
+            self.assertEqual(await response.read(), logo.read_bytes())
         self.assertEqual((await self.client.get("/.env")).status, 404)
         self.assertEqual((await self.client.get("/lightpost/config.py")).status, 404)
 

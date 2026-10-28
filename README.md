@@ -4,7 +4,7 @@
 
 A lightweight, self-hosted social media scheduler. Connect your accounts, write a post, and publish now or schedule it for later—all from one dashboard.
 
-![LightPost composer with multiple accounts, per-account text and image controls, and a live post preview](images/workspace.png)
+![LightPost landing page with its publishing headline and social platform logos](images/landing.png)
 
 ## Features
 
@@ -90,4 +90,4 @@ Tests use temporary databases and mocked platform requests, never real social ac
 
 ## License
 
-[MIT](LICENSE). LightPost is an independent project and is not affiliated with Post Bridge or the supported platforms. Platform logos belong to their respective owners and are subject to their brand guidelines.
+[MIT](LICENSE). LightPost is an independent project and is not affiliated with Post Bridge or the supported platforms. The Instagram gradient glyph comes from [Meta’s official logo pack](https://www.meta.com/brand/resources/instagram/instagram-brand/). Additional logos come from [TikTok’s developer asset pack](https://developers.tiktok.com/doc/getting-started-design-guidelines), [Pinterest’s brand resources](https://business.pinterest.com/brand-guidelines/), and [Google Business Profile](https://business.google.com/us/business-profile/). Platform logos belong to their respective owners and are subject to their brand guidelines.

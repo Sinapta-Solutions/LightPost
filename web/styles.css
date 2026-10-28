@@ -903,6 +903,11 @@ dialog::backdrop {
   height: 36px;
   font-size: 18px;
 }
+.platform-mark.tiktok,
+.platform-mark.pinterest,
+.platform-mark.google-business {
+  background: #fff;
+}
 .landing h1 {
   font-size: clamp(42px, 6.3vw, 82px);
   line-height: 1.09;
@@ -1190,8 +1195,7 @@ dialog::backdrop {
   color: #5865f2;
 }
 .platform-mark.instagram {
-  background: #fcecf3;
-  color: #b84c7f;
+  background: #fff;
 }
 .platform-mark.threads {
   background: #f0f0ee;

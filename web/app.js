@@ -31,6 +31,9 @@ const platformLogos = new Set([
   'telegram',
   'facebook',
   'linkedin',
+  'tiktok',
+  'pinterest',
+  'google-business',
 ]);
 const mark = (platform) =>
   `<span class="platform-mark ${esc(platform)}" aria-hidden="true">${platformLogos.has(platform) ? `<img src="/logos/${platform}.svg" alt="" width="20" height="20" decoding="async" />` : icon('accounts')}</span>`;
@@ -146,7 +149,24 @@ function themeToggle() {
 }
 function renderLanding() {
   document.title = 'LightPost — your publishing desk';
-  root.innerHTML = `<div class="landing"><header class="landing-header">${brand}<div class="landing-header-actions">${themeToggle()}<a class="button" href="/app">Open workspace ↗</a></div></header><main><section class="landing-hero"><div class="hero-platforms"><span>${mark('bluesky')}Bluesky</span><span>${mark('mastodon')}Mastodon</span><span>${mark('x')}X (Twitter)</span><span>${mark('instagram')}Instagram</span><span>${mark('facebook')}Facebook Pages</span><span>${mark('threads')}Threads</span><span>${mark('discord')}Discord</span><span>${mark('telegram')}Telegram</span><span>${mark('linkedin')}LinkedIn</span></div><h1>Automate posting to all of your socials from one dashboard</h1><p class="hero-description">One post. Your accounts. A time that works.<br>A small, open-source publishing desk you can self-host.</p><a class="button primary hero-cta" href="/app">Start creating <span aria-hidden="true">→</span></a><p class="hero-note">Free to self-host · MIT licensed · Your data stays with you</p></section><section class="landing-bottom"><div><h2>Write it once</h2><p>Choose several accounts, including multiple accounts on the same platform. Send your post to them together.</p></div><div><h2>Put it on the calendar</h2><p>Draft today, publish later. Your queue stays in SQLite and resumes when your server comes back online.</p></div><div><h2>Keep it small</h2><p>Async Python, a plain browser interface, and no external database. Run it on your own computer or server.</p></div></section></main><footer class="landing-footer">LightPost is independent and not affiliated with Post Bridge. Bluesky, Mastodon, X (Twitter), Instagram, Threads, Discord, Telegram, LinkedIn and Facebook Pages. Platform API fees may apply.</footer></div>`;
+  root.innerHTML = `<div class="landing"><header class="landing-header">${brand}<div class="landing-header-actions">${themeToggle()}<a class="button" href="/app">Open workspace ↗</a></div></header><main><section class="landing-hero"><h1>Automate posting to all of your socials from one dashboard</h1><div class="hero-platforms">${[
+    ['bluesky', 'Bluesky'],
+    ['mastodon', 'Mastodon'],
+    ['x', 'X (Twitter)'],
+    ['instagram', 'Instagram'],
+    ['facebook', 'Facebook Pages'],
+    ['threads', 'Threads'],
+    ['discord', 'Discord'],
+    ['telegram', 'Telegram'],
+    ['linkedin', 'LinkedIn'],
+    ['tiktok', 'TikTok'],
+    ['pinterest', 'Pinterest'],
+    ['google-business', 'Google Business Profile'],
+  ]
+    .map(([platform, name]) => `<span role="img" aria-label="${name}">${mark(platform)}</span>`)
+    .join(
+      '',
+    )}</div><p class="hero-description">One post. Your accounts. A time that works.<br>A small, open-source publishing desk you can self-host.</p><a class="button primary hero-cta" href="/app">Start creating <span aria-hidden="true">→</span></a><p class="hero-note">Free to self-host · MIT licensed · Your data stays with you</p></section><section class="landing-bottom"><div><h2>Write it once</h2><p>Choose several accounts, including multiple accounts on the same platform. Send your post to them together.</p></div><div><h2>Put it on the calendar</h2><p>Draft today, publish later. Your queue stays in SQLite and resumes when your server comes back online.</p></div><div><h2>Keep it small</h2><p>Async Python, a plain browser interface, and no external database. Run it on your own computer or server.</p></div></section></main><footer class="landing-footer">LightPost is independent and not affiliated with Post Bridge. Bluesky, Mastodon, X (Twitter), Instagram, Threads, Discord, Telegram, LinkedIn and Facebook Pages. Platform API fees may apply.</footer></div>`;
 }
 function renderShell() {
   document.title = 'LightPost — workspace';
