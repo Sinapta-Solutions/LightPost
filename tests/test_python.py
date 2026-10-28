@@ -56,15 +56,17 @@ class ConfigTests(unittest.TestCase):
     def test_password_length_and_loopback_requirements(self):
         for host, password, valid in [
             ("0.0.0.0", "", False),
-            ("0.0.0.0", "a", True),
+            ("0.0.0.0", "a", False),
+            ("0.0.0.0", "a" * 7, False),
             ("0.0.0.0", "a" * 8, True),
-            ("0.0.0.0", "a" * 9, False),
-            ("0.0.0.0", "a" * 16, False),
+            ("0.0.0.0", "a" * 9, True),
+            ("0.0.0.0", "a" * 16, True),
+            ("0.0.0.0", "a" * 64, True),
             ("127.0.0.1", "", True),
             ("localhost", "", True),
             ("::1", "", True),
             ("127.0.0.1", "a" * 8, True),
-            ("127.0.0.1", "a" * 9, False),
+            ("127.0.0.1", "a" * 9, True),
         ]:
             with (
                 self.subTest(host=host, length=len(password)),
