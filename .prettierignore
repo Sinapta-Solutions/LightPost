@@ -1,0 +1,6 @@
+node_modules/
+dist/
+data/
+.venv/
+.ruff_cache/
+__pycache__/

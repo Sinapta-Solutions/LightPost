@@ -1,0 +1,15 @@
+{
+  "name": "lightpost",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": ".venv/bin/python -m lightpost",
+    "test": ".venv/bin/python -m unittest discover -s tests -p 'test_*.py' -v",
+    "build": "node --check web/theme.js && node --check web/app.js && node --check web/guides.js && node --test tests/*.test.mjs",
+    "format": "prettier --write . && .venv/bin/python -m ruff format lightpost tests"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10"
+  }
+}
