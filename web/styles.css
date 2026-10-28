@@ -864,12 +864,21 @@ dialog::backdrop {
 }
 .landing {
   background: #fff;
-  min-height: 100vh;
+  height: 100svh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+.landing > main {
+  display: grid;
+  place-items: center;
+  min-height: 0;
 }
 .landing-header {
+  width: 100%;
   max-width: 1350px;
-  margin: auto;
-  padding: 31px 45px;
+  margin: 0 auto;
+  padding: clamp(12px, 3svh, 31px) 45px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -880,8 +889,9 @@ dialog::backdrop {
 .landing-hero {
   text-align: center;
   max-width: 1110px;
-  margin: 64px auto 0;
-  padding: 0 30px 75px;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(8px, 2svh, 24px) 30px;
 }
 .hero-platforms {
   display: flex;
@@ -909,7 +919,7 @@ dialog::backdrop {
   background: #fff;
 }
 .landing h1 {
-  font-size: clamp(42px, 6.3vw, 82px);
+  font-size: clamp(28px, min(6.3vw, 9svh), 82px);
   line-height: 1.09;
   letter-spacing: -4px;
   font-weight: 700;
@@ -925,7 +935,7 @@ dialog::backdrop {
   margin: 0 auto 30px;
 }
 .hero-cta {
-  padding: 18px 43px !important;
+  padding: clamp(9px, 2svh, 18px) 43px !important;
   font-size: 16px !important;
   border-radius: 40px !important;
   min-width: 230px;
@@ -935,28 +945,10 @@ dialog::backdrop {
   color: #969da5;
   margin: 22px auto 0;
 }
-.landing-bottom {
-  max-width: 1050px;
-  border-top: 1px solid var(--line);
-  margin: 0 auto;
-  padding: 35px 30px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 45px;
-}
-.landing-bottom h2 {
-  font-size: 14px;
-  font-weight: 600;
-}
-.landing-bottom p {
-  font-size: 12px;
-  line-height: 1.8;
-  color: #8b929b;
-}
 .landing-footer {
   max-width: 1200px;
-  margin: 45px auto 0;
-  padding: 25px;
+  margin: 0 auto;
+  padding: clamp(8px, 2svh, 20px) 25px;
   text-align: center;
   color: #a1a6ac;
   font-size: 10px;
@@ -1064,9 +1056,6 @@ dialog::backdrop {
   .settings-grid {
     grid-template-columns: 1fr 1fr;
   }
-  .landing-hero {
-    margin-top: 65px;
-  }
   .landing h1 {
     letter-spacing: -2.4px;
   }
@@ -1146,8 +1135,7 @@ dialog::backdrop {
     padding: 8px 10px;
   }
   .landing-hero {
-    margin-top: 60px;
-    padding: 0 22px 55px;
+    padding: 0 20px;
   }
   .hero-platforms {
     gap: 14px;
@@ -1163,7 +1151,7 @@ dialog::backdrop {
     font-size: 14px;
   }
   .landing h1 {
-    font-size: 43px;
+    font-size: clamp(26px, 7vw, 43px);
     letter-spacing: -2px;
     line-height: 1.12;
   }
@@ -1171,15 +1159,9 @@ dialog::backdrop {
     font-size: 14px;
     line-height: 1.9;
   }
-  .landing-bottom {
-    grid-template-columns: 1fr;
-    gap: 12px;
-    margin: 0 23px;
-    padding: 20px 0;
-  }
   .landing-footer {
-    line-height: 1.8;
-    margin-top: 15px;
+    font-size: 9px;
+    line-height: 1.5;
   }
   .actions button {
     flex: 1;
@@ -1773,7 +1755,6 @@ button.saved-library-button:hover {
     .hero-platforms span,
     .hero-description,
     .hero-note,
-    .landing-bottom p,
     .landing-footer
   ) {
   color: var(--muted);
@@ -2012,4 +1993,41 @@ button.saved-library-button:hover {
 .required-toggle:focus-visible .required-toggle-tooltip {
   left: 50%;
   top: 0;
+}
+
+@media (max-height: 700px) {
+  .landing-header {
+    padding: 12px 20px;
+    gap: 10px;
+  }
+  .landing h1 {
+    font-size: clamp(22px, min(6vw, 7svh), 48px);
+    line-height: 1.1;
+    letter-spacing: -1.2px;
+    margin-bottom: clamp(8px, 2svh, 14px);
+  }
+  .hero-platforms {
+    gap: 10px;
+    margin-bottom: clamp(8px, 2svh, 14px);
+  }
+  .hero-platforms .platform-mark {
+    width: 26px;
+    height: 26px;
+  }
+  .hero-description {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: clamp(8px, 2svh, 14px);
+  }
+  .hero-cta {
+    font-size: 14px !important;
+    padding: 9px 28px !important;
+  }
+  .hero-note {
+    margin-top: clamp(6px, 1.5svh, 10px);
+    line-height: 1.4;
+  }
+  .landing-footer {
+    padding: 8px 16px;
+  }
 }

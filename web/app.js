@@ -179,7 +179,7 @@ function renderLanding() {
     .map(([platform, name]) => `<span role="img" aria-label="${name}">${mark(platform)}</span>`)
     .join(
       '',
-    )}</div><p class="hero-description">One post. Your accounts. A time that works.<br>A small, open-source publishing desk you can self-host.</p><a class="button primary hero-cta" href="/app">Start creating <span aria-hidden="true">→</span></a><p class="hero-note">Free to self-host · MIT licensed · Your data stays with you</p></section><section class="landing-bottom"><div><h2>Write it once</h2><p>Choose several accounts, including multiple accounts on the same platform. Send your post to them together.</p></div><div><h2>Put it on the calendar</h2><p>Draft today, publish later. Your queue stays in SQLite and resumes when your server comes back online.</p></div><div><h2>Keep it small</h2><p>Async Python, a plain browser interface, and no external database. Run it on your own computer or server.</p></div></section></main><footer class="landing-footer">LightPost is independent and not affiliated with Post Bridge. Bluesky, Mastodon, X (Twitter), Instagram, Threads, Discord, Telegram, LinkedIn and Facebook Pages. Platform API fees may apply.</footer></div>`;
+    )}</div><p class="hero-description">One post. Your accounts. A timeLightPost is independent and not affiliated with Post Bridge. Bluesky, Mastodon, X (Twitter that works.<br>A small, open-source publishing desk you can self-host.</p><a class="button primary hero-cta" href="/app">Start creating <span aria-hidden="true">→</span></a><p class="hero-note">Free to self-host · MIT licensed · Your data stays with you</p></section></main><footer class="landing-footer">), Instagram, Threads, Discord, Telegram, LinkedIn and Facebook Pages. Platform API fees may apply.</footer></div>`;
 }
 function renderShell() {
   document.title = 'LightPost — workspace';
@@ -352,42 +352,40 @@ function renderPostList() {
   $('#post-list').className = posts.length ? 'post-list' : '';
   $('#post-list').innerHTML = posts.length
     ? posts
-        .map((post) => {
-          const latest = instagramLast(
-            Object.values(Object.fromEntries((post.results || []).map((r) => [r.accountId, r]))),
-            (result) => state.accounts.find((account) => account.id === result.accountId)?.platform,
-          );
-          return `<article class="post-row"><div class="post-row-top"><span class="post-time">${dateText(post.scheduledAt || post.finishedAt || post.createdAt)}</span>${post.status === 'published' ? '<span class="post-published">PUBLISHED</span>' : badge(post.status)}</div><div class="post-content-card">${(post.mediaIds || []).length ? `<div class="post-thumbnail"><img src="/api/media/${encodeURIComponent(post.mediaIds[0])}" alt="${esc(post.alts?.[post.mediaIds[0]] || state.media.find((m) => m.id === post.mediaIds[0])?.alt || 'Attached image')}" loading="lazy" />${post.mediaIds.length > 1 ? `<span class="post-image-count" aria-label="${post.mediaIds.length} attached images">+${post.mediaIds.length - 1}</span>` : ''}</div>` : ''}${post.text ? `<p class="post-text">${esc(post.text)}</p>` : ''}</div>${
-            !latest.length
-              ? `<div class="post-accounts">${instagramLast(
-                  post.accountIds,
-                  (id) => state.accounts.find((account) => account.id === id)?.platform,
-                )
-                  .map((id) => {
-                    const account = state.accounts.find((a) => a.id === id);
-                    return `<span>${account ? mark(account.platform) : ''}<strong>${esc(account?.handle || 'Disconnected account')}</strong></span>`;
-                  })
-                  .join('')}</div>`
-              : ''
-          }${post.message ? `<div class="notice warning">${esc(post.message)}</div>` : ''}${
-            latest.length
-              ? `<div class="receipts">${latest
-                  .map((r) => {
-                    const a = state.accounts.find((a) => a.id === r.accountId);
-                    const link = safeLink(r.url);
-                    const message =
-                      a?.platform === 'x' &&
-                      r.status === 'published' &&
-                      r.message === 'Published text only. Images were omitted for X.'
-                        ? ''
-                        : r.message;
-                    return `<div class="receipt">${a ? mark(a.platform) : ''}<strong>${esc(a?.handle || 'Account')}</strong> · ${r.status === 'published' ? '<span class="published-check" role="img" aria-label="Published" title="Published"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="m5.8 10 2.7 2.7 5.7-5.4"/></svg></span>' : badge(r.status)} ${link ? `<a href="${esc(link)}" target="_blank" rel="noopener noreferrer">View post ↗</a>` : ''}${message ? `<p>${esc(message)}</p>` : ''}</div>`;
-                  })
-                  .join('')}</div>`
-              : ''
+      .map((post) => {
+        const latest = instagramLast(
+          Object.values(Object.fromEntries((post.results || []).map((r) => [r.accountId, r]))),
+          (result) => state.accounts.find((account) => account.id === result.accountId)?.platform,
+        );
+        return `<article class="post-row"><div class="post-row-top"><span class="post-time">${dateText(post.scheduledAt || post.finishedAt || post.createdAt)}</span>${post.status === 'published' ? '<span class="post-published">PUBLISHED</span>' : badge(post.status)}</div><div class="post-content-card">${(post.mediaIds || []).length ? `<div class="post-thumbnail"><img src="/api/media/${encodeURIComponent(post.mediaIds[0])}" alt="${esc(post.alts?.[post.mediaIds[0]] || state.media.find((m) => m.id === post.mediaIds[0])?.alt || 'Attached image')}" loading="lazy" />${post.mediaIds.length > 1 ? `<span class="post-image-count" aria-label="${post.mediaIds.length} attached images">+${post.mediaIds.length - 1}</span>` : ''}</div>` : ''}${post.text ? `<p class="post-text">${esc(post.text)}</p>` : ''}</div>${!latest.length
+            ? `<div class="post-accounts">${instagramLast(
+              post.accountIds,
+              (id) => state.accounts.find((account) => account.id === id)?.platform,
+            )
+              .map((id) => {
+                const account = state.accounts.find((a) => a.id === id);
+                return `<span>${account ? mark(account.platform) : ''}<strong>${esc(account?.handle || 'Disconnected account')}</strong></span>`;
+              })
+              .join('')}</div>`
+            : ''
+          }${post.message ? `<div class="notice warning">${esc(post.message)}</div>` : ''}${latest.length
+            ? `<div class="receipts">${latest
+              .map((r) => {
+                const a = state.accounts.find((a) => a.id === r.accountId);
+                const link = safeLink(r.url);
+                const message =
+                  a?.platform === 'x' &&
+                    r.status === 'published' &&
+                    r.message === 'Published text only. Images were omitted for X.'
+                    ? ''
+                    : r.message;
+                return `<div class="receipt">${a ? mark(a.platform) : ''}<strong>${esc(a?.handle || 'Account')}</strong> · ${r.status === 'published' ? '<span class="published-check" role="img" aria-label="Published" title="Published"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9"/><path d="m5.8 10 2.7 2.7 5.7-5.4"/></svg></span>' : badge(r.status)} ${link ? `<a href="${esc(link)}" target="_blank" rel="noopener noreferrer">View post ↗</a>` : ''}${message ? `<p>${esc(message)}</p>` : ''}</div>`;
+              })
+              .join('')}</div>`
+            : ''
           }<div class="row-actions">${['draft', 'scheduled', 'blocked'].includes(post.status) ? `<button class="quiet small" data-edit="${esc(post.id)}">Edit</button>` : ''}${!['queued', 'publishing', 'processing'].includes(post.status) ? `<button class="quiet small" data-duplicate="${esc(post.id)}">Duplicate</button>` : ''}${['failed', 'partial', 'needs_review', 'cancelled'].includes(post.status) ? `<button class="small" data-retry="${esc(post.id)}">Retry unsuccessful</button>` : ''}${['scheduled', 'queued', 'publishing', 'processing'].includes(post.status) ? `<button class="quiet small" data-cancel="${esc(post.id)}">${post.status === 'scheduled' ? 'Cancel schedule' : 'Cancel posting'}</button>` : `<button class="quiet small danger" data-delete-post="${esc(post.id)}">Delete</button>`}</div></article>`;
-        })
-        .join('')
+      })
+      .join('')
     : `<div class="empty"><span class="eyebrow">A little space to plan</span><h2>${filter === 'all' ? 'Your first post starts here.' : 'Nothing here yet.'}</h2><p>Draft something, choose your accounts, and publish it now or schedule a time.</p><button class="primary" data-page="compose">Create a post →</button></div>`;
   $('#pagination').innerHTML =
     postTotal > 50
@@ -406,13 +404,12 @@ function renderDocs() {
     return;
   }
   $('#page').innerHTML =
-    `<a class="docs-back" href="#docs">← All platforms</a><div class="page-header guide-header"><div><h1>${mark(guide.id)}${esc(guide.name)} setup</h1><p>${docsText(guide.account)}</p></div><button class="primary" data-connect-platform="${guide.id}">Connect ${esc(guide.name)}</button></div><p class="small-text muted">Follow these steps to connect an account you own.</p>${guide.estimatedTime ? `<p class="small-text muted"><strong>Estimated setup time:</strong> ${esc(guide.estimatedTime)}.</p>` : ''}${guide.costNotice ? `<div class="notice warning"><strong>${docsText(guide.costNotice)}</strong></div>` : ''}<article class="docs-article">${
-      guide.id === 'instagram'
-        ? ''
-        : [guide.approval, guide.credentials]
-            .filter(Boolean)
-            .map((text) => `<p>${docsText(text)}</p>`)
-            .join('')
+    `<a class="docs-back" href="#docs">← All platforms</a><div class="page-header guide-header"><div><h1>${mark(guide.id)}${esc(guide.name)} setup</h1><p>${docsText(guide.account)}</p></div><button class="primary" data-connect-platform="${guide.id}">Connect ${esc(guide.name)}</button></div><p class="small-text muted">Follow these steps to connect an account you own.</p>${guide.estimatedTime ? `<p class="small-text muted"><strong>Estimated setup time:</strong> ${esc(guide.estimatedTime)}.</p>` : ''}${guide.costNotice ? `<div class="notice warning"><strong>${docsText(guide.costNotice)}</strong></div>` : ''}<article class="docs-article">${guide.id === 'instagram'
+      ? ''
+      : [guide.approval, guide.credentials]
+        .filter(Boolean)
+        .map((text) => `<p>${docsText(text)}</p>`)
+        .join('')
     }${guide.steps
       .map((step, index) => {
         const item = typeof step === 'string' ? { title: guide.titles[index], text: step } : step;
@@ -805,14 +802,13 @@ document.addEventListener('click', async (event) => {
     if (data.action === 'library')
       openDialog(
         'Saved Library',
-        `<p class="small-text muted">Select a saved image to attach it.</p><div class="library">${
-          state.media
-            .map((m) => {
-              const issue = savedImageIssue(m);
-              return `<button type="button" data-pick-image="${esc(m.id)}" ${issue ? `disabled title="${esc(issue)}"` : ''}><img loading="lazy" src="/api/media/${encodeURIComponent(m.id)}" alt="${esc(m.alt || m.name)}" /><small>${esc(m.name)}</small>${issue ? `<small class="library-unavailable">${esc(issue)}</small>` : ''}</button>`;
-            })
-            .join('') ||
-          '<p class="small-text muted">No saved images yet. Use Add Image to import one.</p>'
+        `<p class="small-text muted">Select a saved image to attach it.</p><div class="library">${state.media
+          .map((m) => {
+            const issue = savedImageIssue(m);
+            return `<button type="button" data-pick-image="${esc(m.id)}" ${issue ? `disabled title="${esc(issue)}"` : ''}><img loading="lazy" src="/api/media/${encodeURIComponent(m.id)}" alt="${esc(m.alt || m.name)}" /><small>${esc(m.name)}</small>${issue ? `<small class="library-unavailable">${esc(issue)}</small>` : ''}</button>`;
+          })
+          .join('') ||
+        '<p class="small-text muted">No saved images yet. Use Add Image to import one.</p>'
         }</div>`,
       );
     if (data.action === 'source-image')
