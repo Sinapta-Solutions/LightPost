@@ -78,7 +78,7 @@ An interrupted delivery may need manual review if a platform accepted a post bef
 ## Development
 
 ```sh
-.venv/bin/python -m pip install -r requirements-dev.txt
+.venv/bin/python -m pip install -r requirements.txt
 npm ci
 npm test
 npm run build
