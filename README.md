@@ -47,6 +47,8 @@ Bring your own authorized platform credentials. API fees, token expiry, permissi
 Requires **Python 3.11+ on Linux or macOS**.
 
 ```sh
+git clone https://github.com/brainstormity/LightPost.git
+cd LightPost
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 .venv/bin/python -m lightpost
@@ -78,7 +80,7 @@ An interrupted delivery may need manual review if a platform accepted a post bef
 ## Development
 
 ```sh
-.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python -m pip install -r requirements.txt ruff==0.14.2
 npm ci
 npm test
 npm run build
