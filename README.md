@@ -58,6 +58,38 @@ Open [localhost:3000/app](http://localhost:3000/app), connect an account, and cr
 
 Keep the app running for scheduled delivery. For automatic startup on Linux, an optional systemd service is provided in [deploy/lightpost.service](deploy/lightpost.service); it expects the app at `/opt/lightpost`, a `lightpost` system user, and a writable `data/` directory.
 
+### Run in Docker
+
+Requires Docker with Compose 2.30 or newer. Copy `.env.example` to
+`.env.container`, set an `ADMIN_PASSWORD` of at least 16 characters, and restrict
+the file to your user with `chmod 600 .env.container`. The raw environment file
+preserves password characters literally; keep each value on one line.
+
+```sh
+docker compose up --build -d
+docker compose ps
+```
+
+The application listens at `http://127.0.0.1:4016/app`. SQLite, media and the
+generated encryption key persist in the `lightpost_data` volume. The container
+runs as an unprivileged user and restarts automatically unless stopped.
+
+For private HTTPS access from another device on your Tailscale network, set
+`COOKIE_SECURE=true` in `.env.container`, recreate the container with
+`docker compose up -d`, and run:
+
+```sh
+tailscale serve --bg --https=10443 http://127.0.0.1:4016
+```
+
+Open the HTTPS address printed by Tailscale, followed by `/app`. This serves
+only your tailnet; it does not enable Funnel. With secure cookies enabled,
+use that HTTPS address on the local computer as well.
+
+Stop with `docker compose stop`. To back up, stop the application and preserve
+the complete `lightpost_data` volume together with `.env.container`. Avoid
+`docker compose down -v`, which deletes the stored workspace.
+
 ## Configuration and backups
 
 No `.env` file is required for the default setup. To override settings, copy [.env.example](.env.example) to `.env`. Environment variables take precedence.
