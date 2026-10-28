@@ -7,6 +7,19 @@ const esc = (text = '') =>
     /[&<>"']/g,
     (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
   );
+const docsText = (text) =>
+  esc(text)
+    .replace(
+      /\[([^\]\n]+)\]\((https:\/\/[^)\s]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+    )
+    .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*\n]+)\*/g, '<em>$1</em>')
+    .replace(/\n/g, '<br>')
+    .replace(
+      /\b(?:Access Token Secret|Consumer Key|Consumer Secret|Access Token)\b/g,
+      '<strong>$&</strong>',
+    );
 const icons = {
   docs: '<path d="M4 4h6a3 3 0 0 1 3 3v14a4 4 0 0 0-4-2H4zm16 0h-4a3 3 0 0 0-3 3v14a4 4 0 0 1 4-2h3Z"/>',
   compose: '<path d="m16 3 5 5-12 12-6 1 1-6Z"/><path d="m14 5 5 5"/>',
@@ -393,14 +406,19 @@ function renderDocs() {
     return;
   }
   $('#page').innerHTML =
-    `<a class="docs-back" href="#docs">← All platforms</a><div class="page-header guide-header"><div><h1>${esc(guide.name)} setup</h1><p>${esc(guide.account)}</p></div><button class="primary" data-connect-platform="${guide.id}">Connect ${esc(guide.name)}</button></div><p class="small-text muted">Follow these steps to connect an account you own.</p><article class="docs-article">${guide.id === 'instagram' ? '' : `<p>${esc(guide.approval)}</p><p>${esc(guide.credentials)}</p>`}${guide.steps
+    `<a class="docs-back" href="#docs">← All platforms</a><div class="page-header guide-header"><div><h1>${mark(guide.id)}${esc(guide.name)} setup</h1><p>${docsText(guide.account)}</p></div><button class="primary" data-connect-platform="${guide.id}">Connect ${esc(guide.name)}</button></div><p class="small-text muted">Follow these steps to connect an account you own.</p>${guide.estimatedTime ? `<p class="small-text muted"><strong>Estimated setup time:</strong> ${esc(guide.estimatedTime)}.</p>` : ''}${guide.costNotice ? `<div class="notice warning"><strong>${docsText(guide.costNotice)}</strong></div>` : ''}<article class="docs-article">${
+      guide.id === 'instagram'
+        ? ''
+        : [guide.approval, guide.credentials]
+            .filter(Boolean)
+            .map((text) => `<p>${docsText(text)}</p>`)
+            .join('')
+    }${guide.steps
       .map((step, index) => {
         const item = typeof step === 'string' ? { title: guide.titles[index], text: step } : step;
-        return `<section class="docs-section docs-step" id="${guide.id}-step-${index + 1}"><div><p><strong>Step ${index + 1}:</strong> ${item.link ? `Navigate to <a href="${esc(item.link.url)}" target="_blank" rel="noopener noreferrer">${esc(item.link.label)}</a> ` : ''}${esc(item.text)}</p>${(item.images || []).map((image) => `<figure><img class="docs-screenshot" src="${esc(image.src)}" alt="${esc(image.alt)}" loading="lazy" />${image.caption ? `<figcaption>${esc(image.caption)}</figcaption>` : ''}</figure>`).join('')}</div></section>`;
+        return `<section class="docs-section docs-step" id="${guide.id}-step-${index + 1}"><div><p><strong>Step ${index + 1}:</strong> ${item.link ? `Navigate to <a href="${esc(item.link.url)}" target="_blank" rel="noopener noreferrer">${docsText(item.link.label)}</a> ` : ''}${docsText(item.text)}</p>${(item.images || []).map((image) => `<figure><img class="docs-screenshot" src="${esc(image.src)}" alt="${esc(image.alt)}" loading="lazy" />${image.caption ? `<figcaption>${docsText(image.caption)}</figcaption>` : ''}</figure>`).join('')}</div></section>`;
       })
-      .join(
-        '',
-      )}</article><div class="docs-links">${guide.links.map(([label, url]) => `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(label)} ↗</a>`).join('')}</div>`;
+      .join('')}</article>`;
 }
 
 function renderSettings() {

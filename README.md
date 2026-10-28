@@ -4,7 +4,7 @@
 
 A lightweight, self-hosted social media scheduler. Connect your accounts, write a post, and publish now or schedule it for later—all from one dashboard.
 
-![LightPost landing page with its publishing headline and social platform logos](images/landing.png)
+![LightPost landing page with its publishing headline and social platform logos](public/landing.png)
 
 ## Features
 

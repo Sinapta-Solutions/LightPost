@@ -935,6 +935,16 @@ class ApiTests(unittest.IsolatedAsyncioTestCase):
         for platform in ("discord", "bluesky", "mastodon", "x", "instagram", "threads"):
             self.assertIn("id: '" + platform + "'", content)
         self.assertIn("Step ${index + 1}:", await (await self.client.get("/app.js")).text())
+        for platform, count in (("instagram", 14), ("x", 4)):
+            screenshots = list(Path(f"web/images/{platform}").glob("s*.png"))
+            self.assertEqual(len(screenshots), count)
+            for screenshot in screenshots:
+                route = f"/images/{platform}/" + screenshot.name
+                self.assertIn(route, content)
+                response = await self.client.get(route)
+                self.assertEqual(response.status, 200, route)
+                self.assertEqual(response.content_type, "image/png", route)
+                self.assertEqual(await response.read(), screenshot.read_bytes())
 
     async def test_password_login_logout_and_limit(self):
         self.config.password = "test-password-long-enough"

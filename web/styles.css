@@ -1220,13 +1220,6 @@ dialog::backdrop {
   gap: 13px;
   margin: 23px 0;
 }
-.docs-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin: 24px 0;
-  font-size: 12px;
-}
 @media (max-width: 600px) {
   .nav button {
     padding: 11px 6px;
@@ -1371,7 +1364,7 @@ dialog::backdrop {
   color: var(--muted);
 }
 .docs-step strong {
-  color: var(--text, #24292f);
+  color: inherit;
 }
 
 button.image-url-button {
@@ -1732,8 +1725,7 @@ button.saved-library-button:hover {
   background: #1d53c1;
   border-color: #1d53c1;
 }
-:root[data-theme='dark']
-  :is(.brand, .topbar strong, .nav button.active, .landing h1, .docs-step strong) {
+:root[data-theme='dark'] :is(.brand, .topbar strong, .nav button.active, .landing h1) {
   color: var(--text);
 }
 :root[data-theme='dark'] .sidebar {
@@ -1895,6 +1887,11 @@ button.saved-library-button:hover {
   }
 }
 
+.guide-header h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .guide-header {
   flex-wrap: wrap;
 }

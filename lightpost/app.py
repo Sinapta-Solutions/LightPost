@@ -628,7 +628,7 @@ async def static(request):
     if (
         not path.is_relative_to(root)
         or not path.is_file()
-        or path.suffix not in (".html", ".js", ".css", ".svg", ".ico")
+        or path.suffix not in (".html", ".js", ".css", ".svg", ".png", ".ico")
     ):
         raise web.HTTPNotFound(text="Page not found.")
     return web.FileResponse(path)

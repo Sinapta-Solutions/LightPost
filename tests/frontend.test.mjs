@@ -256,12 +256,72 @@ test('dialogs, retry actions, and cancellation controls', async () => {
   );
   vm.runInContext(`composer.contentOptions.ig = {image: false};`, context);
   assert.equal(vm.runInContext('savedImageIssue({publicSource: false})', context), '');
+  assert.equal(
+    vm.runInContext('docsText("<script>Access Token Secret</script>")', context),
+    '&lt;script&gt;<strong>Access Token Secret</strong>&lt;/script&gt;',
+  );
   vm.runInContext('renderLanding()', context);
   const landing = vm.runInContext('root.innerHTML', context);
   assert.ok(landing.indexOf('</h1>') < landing.indexOf('class="hero-platforms"'));
   const logos = [...landing.matchAll(/src="(\/logos\/[^"]+)"/g)].map((match) => match[1]);
   assert.equal(logos.length, 12);
   assert.ok(!/under development/i.test(landing));
+  for (const [platform, count] of [
+    ['instagram', 14],
+    ['x', 4],
+  ]) {
+    context.location.hash = `#docs/${platform}`;
+    vm.runInContext('renderDocs()', context);
+    const screenshots = guides
+      .find((guide) => guide.id === platform)
+      .steps.flatMap((step) => step.images);
+    assert.equal(screenshots.length, count);
+    for (const image of screenshots) {
+      assert.ok(existsSync(new URL(`../web${image.src}`, import.meta.url)), image.src);
+      assert.ok(pageElement.innerHTML.includes(`src="${image.src}"`), image.src);
+      assert.ok(image.alt.length > 0, image.src);
+    }
+    if (platform === 'x') {
+      for (const name of [
+        'Consumer Key',
+        'Consumer Secret',
+        'Access Token',
+        'Access Token Secret',
+      ]) {
+        assert.ok(pageElement.innerHTML.includes(`<strong>${name}</strong>`), name);
+      }
+      assert.ok(
+        !pageElement.innerHTML.includes('Register for developer access with the X account'),
+      );
+      assert.ok(pageElement.innerHTML.includes('<h1><span class="platform-mark x"'));
+      assert.ok(
+        pageElement.innerHTML.includes(
+          '<em>The app-only Bearer Token and OAuth 2.0 Client Secret are not substitutes.</em>',
+        ),
+      );
+      assert.ok(pageElement.innerHTML.includes('X API is not free.'));
+      assert.ok(pageElement.innerHTML.includes('You must buy API credits'));
+      assert.ok(
+        pageElement.innerHTML.indexOf('X API is not free.') <
+          pageElement.innerHTML.indexOf('id="x-step-1"'),
+      );
+    }
+  }
+
+  context.location.hash = '#docs/telegram';
+  vm.runInContext('renderDocs()', context);
+  assert.ok(
+    pageElement.innerHTML.includes(
+      '<a href="https://web.telegram.org/k/" target="_blank" rel="noopener noreferrer">Telegram Web</a>',
+    ),
+  );
+  assert.ok(!pageElement.innerHTML.includes('<strong>Telegram Web</strong>'));
+  assert.ok(pageElement.innerHTML.includes('<strong>-1004528267057</strong>'));
+  assert.ok(pageElement.innerHTML.includes('<strong>-100</strong>'));
+  assert.ok(pageElement.innerHTML.includes('<strong>bot token</strong>'));
+  assert.ok(!pageElement.innerHTML.includes('id="telegram-step-5"'));
+  assert.ok(!pageElement.innerHTML.includes('No developer app registration or app review'));
+
   for (const path of logos) {
     assert.ok(existsSync(new URL(`../web${path}`, import.meta.url)), path);
     assert.ok(path.endsWith('.svg'), path);
